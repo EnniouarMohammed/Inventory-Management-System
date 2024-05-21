@@ -18,7 +18,7 @@ public interface SaleRepository extends JpaRepository<Sale, Integer>{
     @Query("SELECT COALESCE(COUNT(s), 0) FROM Sale s WHERE s.saleStatus = 'Pending' AND s.createdBy = :user")
     int totalPendingSales(UserIMS user);
 
-    @Query("SELECT COALESCE(COUNT(s), 0) FROM Sale s WHERE s.saleStatus = 'Completed' AND s.createdBy = :user")
+    @Query("SELECT COALESCE(COUNT(s), 0) FROM Sale s WHERE s.saleStatus = 'Completed' AND s.createdBy = :user AND s.refunded = false")
     int totalCompletedSales(UserIMS user);
 
     @Query("SELECT COALESCE((SUM(s.product.price) * SUM(s.quantity)), 0) FROM Sale s WHERE s.createdBy = :user")
@@ -43,7 +43,6 @@ public interface SaleRepository extends JpaRepository<Sale, Integer>{
 
     @Query("SELECT COALESCE((SUM(s.product.cost) * SUM(s.quantity)), 0) FROM Sale s WHERE s.date >= :startOfYear AND s.createdBy = :user")
     double calculateYearlyExpenses(LocalDate startOfYear, UserIMS user);
-
 
     // Top Selling Products
     @Query("SELECT COALESCE(s.product.id,0) FROM Sale s GROUP BY s.product.id ORDER BY SUM(s.quantity) DESC")

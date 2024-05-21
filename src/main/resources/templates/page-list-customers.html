@@ -64,7 +64,7 @@
                         <ul class="nav nav-pills">
                             <li class="nav-item mx-2" th:each="p, stat: ${pages}">
                                 <a th:class="${stat.index == p} ? 'btn btn-primary' : 'btn btn-outline-primary'"
-                                   th:text="${stat.index}" th:href="@{page-list-product(page=${stat.index})}"></a>
+                                   th:text="${stat.index}" th:href="@{page-list-customers(page=${stat.index})}"></a>
                             </li>
                         </ul>
                     </div>

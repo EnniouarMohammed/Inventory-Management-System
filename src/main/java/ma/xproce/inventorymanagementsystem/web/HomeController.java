@@ -63,8 +63,8 @@ public class HomeController {
         model.addAttribute("totalSalesRevenue",totalSalesRevenue);
 
         /*Products*/
-        int totalProducts = productRepository.totalProducts();
-        model.addAttribute("totalProducts",totalProducts);
+        List<Product> userProducts = productRepository.findByCreatedBy(user);
+        model.addAttribute("totalProducts", userProducts.size());
 
         /**********************************************************************Top Selling Products*/
         List<Integer> top5ProductIds = saleRepository.findTop5SellingProductIds(PageRequest.of(0, 5));
