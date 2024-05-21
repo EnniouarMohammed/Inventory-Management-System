@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Edit Product</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Edit Product</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/page-edit-product/{id}(id=${product.id})}" th:object="${product}" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Name *</label>
+                                        <input th:field="*{name}" name="name" type="text" class="form-control" placeholder="Enter Name" data-errors="Please Enter Name." required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Code *</label>
+                                        <input th:field="*{code}" name="code" type="text" class="form-control" placeholder="Enter Code" data-errors="Please Enter Code." required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Category *</label>
+                                        <select name="category" class="selectpicker form-control" data-style="py-0">
+                                            <option th:each="category : ${allCategories}"
+                                                    th:value="${category.getId()}"
+                                                    th:text="${category.getCategoryName()}"
+                                                    th:selected="${category.getCategoryName() == product.getCategory().getCategoryName()}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Cost *</label>
+                                        <input th:field="*{cost}" name="cost" type="text" class="form-control" placeholder="Enter Cost" data-errors="Please Enter Cost." required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Price *</label>
+                                        <input th:field="*{price}" name="price" type="text" class="form-control" placeholder="Enter Price" data-errors="Please Enter Price." required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Quantity *</label>
+                                        <input th:field="*{quantity}" name="quantity" type="text" class="form-control" placeholder="Enter Quantity" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Image</label>
+                                        <input name="image" type="file" class="form-control image-file" accept="image/*">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Current Image</label>
+                                        <div>
+                                            <img th:src="'data:image/jpeg;base64,' + *{image}" alt="Product Image" class="avatar-100 rounded">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Description / Product Details</label>
+                                        <textarea th:field="*{description}" name="description" class="form-control" rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mr-2">Edit Product</button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

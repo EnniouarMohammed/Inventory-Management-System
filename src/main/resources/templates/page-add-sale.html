@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add Sale</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Add Sale</h4><br>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="/page-add-sale" method="post">
+                            <span class="card-title" style="font-weight: bold; font-size: larger;">Sale Reference:</span>
+                            <input name="reference" type="text" th:value="${ref}" readonly="readonly" class="bg-info-light"><br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Date *</label>
+                                        <input name="date" type="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Customer *</label>
+                                        <select name="customer" class="selectpicker form-control" data-style="py-0">
+                                            <option th:each="customers : ${allCustomers}"
+                                                    th:value="${customers.getId()}"
+                                                    th:text="${customers.getFullName()}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Product *</label>
+                                        <select name="product" class="selectpicker form-control" data-style="py-0" id="productSelect">
+                                            <option th:each="product : ${allProducts}"
+                                                    th:value="${product.getId()}"
+                                                    th:text="${product.getName()}"
+                                                    th:data-quantity="${product.getQuantity()}">
+                                            </option>
+                                        </select>
+                                        <script>
+                                            function updateQuantityLimit() {
+                                                var productSelect = document.getElementById("productSelect");
+                                                var selectedOption = productSelect.options[productSelect.selectedIndex];
+                                                var quantity = selectedOption.getAttribute("data-quantity");
+                                                document.getElementById("quantityInput").setAttribute("max", quantity);
+                                                document.getElementById("quantityInput").value = "";
+
+
+                                                if (quantity === "0") {
+                                                    document.getElementById("quantityInput").setAttribute("disabled", true);
+                                                    document.getElementById("submit").setAttribute("disabled", true);
+                                                    document.getElementById("maxvalue").textContent = " [This product is out of stock]";
+                                                }else{
+                                                    document.getElementById("quantityInput").removeAttribute("disabled");
+                                                    document.getElementById("submit").removeAttribute("disabled");
+                                                    document.getElementById("maxvalue").textContent = " [Max quantity is: " + quantity + "]";
+                                                }
+                                            }
+
+                                            document.addEventListener("DOMContentLoaded", function() {
+                                                updateQuantityLimit();
+                                            });
+
+                                            document.getElementById("productSelect").addEventListener("change", function() {
+                                                updateQuantityLimit();
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Quantity *</label><span id="maxvalue"></span>
+                                        <input name="quantity" type="number" min="1" class="form-control" placeholder="Enter Quantity" required id="quantityInput">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Sale Status *</label>
+                                        <select name="saleStatus" class="selectpicker form-control" data-style="py-0">
+                                            <option>Completed</option>
+                                            <option>Pending</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Payment Status *</label>
+                                        <select name="paymentStatus" class="selectpicker form-control" data-style="py-0">
+                                            <option>Pending</option>
+                                            <option>Paid</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Sale Note</label>
+                                        <textarea name="saleNote" class="form-control" rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="submit" type="submit" class="btn btn-primary mr-2">Add Sale</button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

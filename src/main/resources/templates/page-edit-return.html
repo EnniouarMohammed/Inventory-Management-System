@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Edit Return</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Edit Return</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/page-edit-return/{id}(id=${rt.id})}" th:object="${rt}" method="post" data-toggle="validator">
+                            <span class="card-title" style="font-weight: bold; font-size: larger;">Return Reference:</span>
+                            <input name="returnReference" type="text" th:value="*{returnReference}" readonly="readonly" class="bg-info-light"><br>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Date *</label>
+                                        <input th:value="*{date}" name="date" type="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Sales Ref *</label>
+                                        <select name="sale" class="selectpicker form-control" data-style="py-0">
+                                            <option th:each="sales : ${allSales}"
+                                                    th:value="${sales.getId()}"
+                                                    th:text="${sales.getReference()}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Return Status *</label>
+                                        <select name="returnStatus" class="selectpicker form-control" data-style="py-0">
+                                            <option th:selected="*{returnStatus == 'Completed'}">Completed</option>
+                                            <option th:selected="*{returnStatus == 'Pending'}">Pending</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Return Note *</label>
+                                        <textarea th:field="*{returnNote}" name="returnNote" class="form-control" rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mr-2">Edit Returns</button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

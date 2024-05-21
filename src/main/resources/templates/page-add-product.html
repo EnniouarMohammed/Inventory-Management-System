@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add Product</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Add Product</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="/page-add-product" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Name *</label>
+                                        <input name="name" type="text" class="form-control" placeholder="Enter Name" data-errors="Please Enter Name." required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Code *</label>
+                                        <input name="code" type="text" class="form-control" placeholder="Enter Code" data-errors="Please Enter Code." required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Category *</label>
+                                        <select name="category" class="selectpicker form-control" data-style="py-0">
+                                            <option th:each="category : ${allCategories}"
+                                                    th:value="${category.getId()}"
+                                                    th:text="${category.getCategoryName()}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Cost *</label>
+                                        <input name="cost" type="number" class="form-control" placeholder="Enter Cost" data-errors="Please Enter Cost." required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Price *</label>
+                                        <input name="price" type="number" class="form-control" placeholder="Enter Price" data-errors="Please Enter Price." required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Quantity *</label>
+                                        <input name="quantity" type="number" class="form-control" placeholder="Enter Quantity" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Image *</label>
+                                        <input name="image" type="file" class="form-control image-file" accept="image/*" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Description / Product Details</label>
+                                        <textarea name="description" class="form-control" rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mr-2">Add Product</button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+    <head>
+        <meta charset="utf-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Inventory Management System</title>
+    </head>
+
+    <body>
+        <div layout:fragment="content">
+            <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card card-transparent card-block card-stretch card-height border-none">
+                                <div class="card-body p-0 mt-lg-2 mt-0">
+                                    <h3 class="mb-3" th:text="'Hi ' + ${session.firstName} + ', Welcome!'"></h3>
+                                    <p class="mb-0 mr-4">Your dashboard gives you views of key performance or business process.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="card card-block card-stretch card-height">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                <div class="icon iq-icon-box-2 bg-info-light">
+                                                    <img th:src="@{/images/product/1.png}" class="img-fluid" alt="image">
+                                                </div>
+                                                <div>
+                                                    <p class="mb-2">Total Sales</p>
+                                                    <h4 th:text="${totalCompletedSales}"></h4>
+                                                </div>
+                                            </div>
+                                            <div class="iq-progress-bar mt-2">
+                                    <span class="bg-info iq-progress progress-1" data-percent="100">
+                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="card card-block card-stretch card-height">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                <div class="icon iq-icon-box-2 bg-danger-light">
+                                                    <img th:src="@{/images/product/2.png}" class="img-fluid" alt="image">
+                                                </div>
+                                                <div>
+                                                    <p class="mb-2">Total Products</p>
+                                                    <h4 th:text="${totalProducts}"></h4>
+                                                </div>
+                                            </div>
+                                            <div class="iq-progress-bar mt-2">
+                                        <span class="bg-danger iq-progress progress-1" data-percent="100"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="card card-block card-stretch card-height">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-4 card-total-sale">
+                                                <div class="icon iq-icon-box-2 bg-success-light">
+                                                    <img th:src="@{/images/product/3.png}" class="img-fluid" alt="image">
+                                                </div>
+                                                <div>
+                                                    <p class="mb-2">Sales Revenue</p>
+                                                    <h4 th:text="${totalSalesRevenue}"></h4>
+                                                </div>
+                                            </div>
+                                            <div class="iq-progress-bar mt-2">
+                                    <span class="bg-success iq-progress progress-1" data-percent="100">
+                                    </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-8">
+                            <div class="card card-block card-stretch card-height">
+                                <div class="card-header d-flex align-items-center justify-content-between">
+                                    <div class="header-title">
+                                        <h4 class="card-title">Top Products</h4>
+                                    </div>
+
+
+
+
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled row top-product mb-0">
+                                        <li th:each="product : ${top5Products}" class="col-lg-3">
+                                            <div class="card card-block card-stretch card-height mb-0">
+                                                <div class="card-body">
+                                                    <div class="bg-warning-light rounded">
+                                                        <img th:src="'data:image/jpeg;base64,' + ${product.getImage()}" class="style-img img-fluid m-auto p-3" alt="image">
+                                                    </div>
+                                                    <div class="style-text text-left mt-3">
+                                                        <h5 th:text="${product.getName()}" class="mb-1"></h5>
+                                                        <p th:text="${product.getPrice()} + ' $'"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-lg-4">
+                            <div class="card card-block card-stretch card-height-helf">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-top justify-content-between">
+                                        <div class="">
+                                            <p class="mb-0">Income</p>
+                                            <h5 id="incomeValue"></h5>
+                                        </div>
+                                        <div class="card-header-toolbar d-flex align-items-center">
+                                            <div>
+                                                <select id="incomePeriod" class="btn dropdown-toggle border border-dark" onchange="updateIncome(this.value)">
+                                                    <option value="week">This Week</option>
+                                                    <option value="month">This Month</option>
+                                                    <option value="year">This Year</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    function updateIncome(period) {
+                                        fetch('/income?period=' + period)
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                document.getElementById('incomeValue').innerText = '$ ' + data.income.toLocaleString("en-US");
+                                            });
+                                    }
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        updateIncome('week');
+                                    });
+                                </script>
+                            </div>
+                            <!--**********************************************************************************-->
+                            <div class="card card-block card-stretch card-height-helf">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-top justify-content-between">
+                                        <div class="">
+                                            <p class="mb-0">Expenses</p>
+                                            <h5 id="expensesValue"></h5>
+                                        </div>
+                                        <div class="card-header-toolbar d-flex align-items-center">
+                                            <div>
+                                                <select id="expensesPeriod" class="btn dropdown-toggle border border-dark" onchange="updateExpense(this.value)">
+                                                    <option value="week">This Week</option>
+                                                    <option value="month">This Month</option>
+                                                    <option value="year">This Year</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    function updateExpense(period) {
+                                        fetch('/expenses?period=' + period)
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                document.getElementById('expensesValue').innerText = '$ ' + data.expenses.toLocaleString("en-US");
+                                            });
+                                    }
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        updateExpense('week');
+                                    });
+                                </script>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+        </div>
+    </body>
+</html>

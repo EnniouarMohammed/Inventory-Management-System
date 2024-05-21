@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Edit Sale</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Add Sale</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/page-edit-sale/{id}(id=${sale.id})}" th:object="${sale}" method="post">
+                            <span class="card-title" style="font-weight: bold; font-size: larger;">Sale Number:</span>
+                            <input name="reference" type="text" th:value="*{reference}" readonly="readonly" class="bg-info-light"><br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Date *</label>
+                                        <input th:value="*{date}" name="date" type="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Customer *</label>
+                                        <select name="customer" class="selectpicker form-control" data-style="py-0">
+                                            <option th:each="customers : ${allCustomers}"
+                                                    th:value="${customers.getId()}"
+                                                    th:text="${customers.getFullName()}"
+                                                    th:selected="${customers.getFullName() == sale.getCustomer().getFullName()}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Product *</label>
+                                        <select name="product" class="selectpicker form-control" data-style="py-0" id="productSelect">
+                                            <option th:each="product : ${allProducts}"
+                                                    th:value="${product.getId()}"
+                                                    th:text="${product.getName()}"
+                                                    th:selected="${product.getName() == sale.getProduct().getName()}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Sale Status *</label>
+                                        <select name="saleStatus" class="selectpicker form-control" data-style="py-0">
+                                            <option th:selected="*{saleStatus == 'Completed'}">Completed</option>
+                                            <option th:selected="*{saleStatus == 'Pending'}">Pending</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Payment Status *</label>
+                                        <select name="paymentStatus" class="selectpicker form-control" data-style="py-0">
+                                            <option th:selected="*{paymentStatus == 'Paid'}">Paid</option>
+                                            <option th:selected="*{paymentStatus == 'Pending'}">Pending</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Sale Note</label>
+                                        <textarea th:field="*{saleNote}" name="saleNote" class="form-control" rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mr-2">Edit Sale</button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
